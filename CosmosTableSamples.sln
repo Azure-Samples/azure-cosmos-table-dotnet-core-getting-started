@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2036
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CosmosTableSamples", "CosmosTableSamples\CosmosTableSamples.csproj", "{039E3708-8A89-4008-987E-C50958F4C338}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Cover|Any CPU = Cover|Any CPU
+		Cover|x64 = Cover|x64
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{039E3708-8A89-4008-987E-C50958F4C338}.Cover|Any CPU.ActiveCfg = Debug|Any CPU
+		{039E3708-8A89-4008-987E-C50958F4C338}.Cover|Any CPU.Build.0 = Debug|Any CPU
+		{039E3708-8A89-4008-987E-C50958F4C338}.Cover|x64.ActiveCfg = Debug|Any CPU
+		{039E3708-8A89-4008-987E-C50958F4C338}.Cover|x64.Build.0 = Debug|Any CPU
+		{039E3708-8A89-4008-987E-C50958F4C338}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{039E3708-8A89-4008-987E-C50958F4C338}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{039E3708-8A89-4008-987E-C50958F4C338}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{039E3708-8A89-4008-987E-C50958F4C338}.Debug|x64.Build.0 = Debug|Any CPU
+		{039E3708-8A89-4008-987E-C50958F4C338}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{039E3708-8A89-4008-987E-C50958F4C338}.Release|Any CPU.Build.0 = Release|Any CPU
+		{039E3708-8A89-4008-987E-C50958F4C338}.Release|x64.ActiveCfg = Release|Any CPU
+		{039E3708-8A89-4008-987E-C50958F4C338}.Release|x64.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2DACA3A2-20D0-4A48-899F-AE7E1476933A}
+	EndGlobalSection
+EndGlobal
