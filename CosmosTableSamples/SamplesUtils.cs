@@ -75,5 +75,15 @@ namespace CosmosTableSamples
                 throw;
             }
         }
+
+        /// <summary>
+        /// Check if given connection string is for Azure Table storage or Azure CosmosDB Table.
+        /// </summary>
+        /// <returns>true if azure cosmosdb table</returns>
+        public static bool IsAzureCosmosdbTable()
+        {
+            string storageConnectionString = AppSettings.LoadAppSettings().StorageConnectionString;
+            return !String.IsNullOrEmpty(storageConnectionString) && (storageConnectionString.Contains("table.cosmosdb") || storageConnectionString.Contains("table.cosmos"));
+        }
     }
 }
