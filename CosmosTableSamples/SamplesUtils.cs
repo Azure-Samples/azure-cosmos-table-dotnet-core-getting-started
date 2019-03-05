@@ -20,6 +20,11 @@ namespace CosmosTableSamples
                     Console.WriteLine("\t{0}\t{1}\t{2}\t{3}", customer.PartitionKey, customer.RowKey, customer.Email, customer.PhoneNumber);
                 }
 
+                if (result.RequestCharge.HasValue)
+                {
+                    Console.WriteLine("Request Charge of Retrieve Operation: " + result.RequestCharge);
+                }
+
                 return customer;
             }
             catch (StorageException e)
@@ -46,6 +51,11 @@ namespace CosmosTableSamples
                 TableResult result = await table.ExecuteAsync(insertOrMergeOperation);
                 CustomerEntity insertedCustomer = result.Result as CustomerEntity;
 
+                if (result.RequestCharge.HasValue)
+                {
+                    Console.WriteLine("Request Charge of InsertOrMerge Operation: " + result.RequestCharge);
+                }
+
                 return insertedCustomer;
             }
             catch (StorageException e)
@@ -66,7 +76,13 @@ namespace CosmosTableSamples
                 }
 
                 TableOperation deleteOperation = TableOperation.Delete(deleteEntity);
-                await table.ExecuteAsync(deleteOperation);
+                TableResult result = await table.ExecuteAsync(deleteOperation);
+
+                if (result.RequestCharge.HasValue)
+                {
+                    Console.WriteLine("Request Charge of Delete Operation: " + result.RequestCharge);
+                }
+
             }
             catch (StorageException e)
             {

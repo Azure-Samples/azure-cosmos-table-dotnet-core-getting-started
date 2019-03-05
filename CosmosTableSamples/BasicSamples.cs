@@ -22,7 +22,6 @@ namespace CosmosTableSamples
             {
                 // Demonstrate basic CRUD functionality 
                 await BasicDataOperationsAsync(table);
-
             }
             finally
             {
