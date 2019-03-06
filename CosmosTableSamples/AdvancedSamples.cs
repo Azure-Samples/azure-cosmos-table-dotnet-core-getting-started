@@ -384,7 +384,7 @@ namespace CosmosTableSamples
         /// Demonstrate a cross partition query with order by against Cosmos Table API
         /// </summary>
         /// <param name="table">Sample table name</param>
-        /// <param name = "startRowKey" > The lowest bound of the row key range within which to search</param>
+        /// <param name="startRowKey"> The lowest bound of the row key range within which to search</param>
         /// <param name="endRowKey">The highest bound of the row key range within which to search</param>
         /// <returns>A Task object</returns>
         private static async Task ExecuteCrossPartitionQueryWithOrderBy(CloudTable table, string startRowKey, string endRowKey)
