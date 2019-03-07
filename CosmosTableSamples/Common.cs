@@ -38,9 +38,7 @@ namespace CosmosTableSamples
             CloudStorageAccount storageAccount = CreateStorageAccountFromConnectionString(storageConnectionString);
 
             // Create a table client for interacting with the table service
-            TableConnectionPolicy tableConnectionPolicy = new TableConnectionPolicy();
-            tableConnectionPolicy.EnableEndpointDiscovery = true;
-            CloudTableClient tableClient = storageAccount.CreateCloudTableClient();
+            CloudTableClient tableClient = storageAccount.CreateCloudTableClient(new TableClientConfiguration());
 
             Console.WriteLine("Create a Table for the demo");
 

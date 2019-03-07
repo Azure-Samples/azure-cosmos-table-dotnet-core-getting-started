@@ -61,7 +61,7 @@ namespace CosmosTableSamples
         {
             // Demonstrate upsert and batch table operations
             Console.WriteLine("Inserting a batch of entities. ");
-            await BatchInsertOfCustomerEntitiesAsync(table);
+            await BatchInsertOfCustomerEntitiesAsync(table, "Smith");
             Console.WriteLine();
 
             // Query a range of data within a partition using a simple query
@@ -78,6 +78,24 @@ namespace CosmosTableSamples
             Console.WriteLine("Retrieve entities with surname of Smith.");
             await PartitionScanAsync(table, "Smith");
             Console.WriteLine();
+
+            if (SamplesUtils.IsAzureCosmosdbTable())
+            {
+                // Demonstrate upsert and batch table operations
+                Console.WriteLine("Inserting a batch of entities. ");
+                await BatchInsertOfCustomerEntitiesAsync(table, "Dave");
+                Console.WriteLine();
+
+                // Demonstrate upsert and batch table operations
+                Console.WriteLine("Inserting a batch of entities. ");
+                await BatchInsertOfCustomerEntitiesAsync(table, "Shirly");
+                Console.WriteLine();
+
+                //Query for all the data cross partition with order by
+                Console.WriteLine("Query with order by cross partition");
+                await ExecuteCrossPartitionQueryWithOrderBy(table, "0001", "0025");
+                Console.WriteLine();
+            }
         }
 
         /// <summary>
@@ -178,8 +196,9 @@ namespace CosmosTableSamples
         ///  5. Batch size must be less than or equal to 2 MB
         /// </summary>
         /// <param name="table">Sample table name</param>
+        /// <param name="partitionKey">The partition for the entity</param>
         /// <returns>A Task object</returns>
-        private static async Task BatchInsertOfCustomerEntitiesAsync(CloudTable table)
+        private static async Task BatchInsertOfCustomerEntitiesAsync(CloudTable table, string partitionKey)
         {
             try
             {
@@ -189,7 +208,7 @@ namespace CosmosTableSamples
                 // The following code  generates test data for use during the query samples.  
                 for (int i = 0; i < 100; i++)
                 {
-                    batchOperation.InsertOrMerge(new CustomerEntity("Smith", string.Format("{0}", i.ToString("D4")))
+                    batchOperation.InsertOrMerge(new CustomerEntity(partitionKey, string.Format("{0}", i.ToString("D4")))
                     {
                         Email = string.Format("{0}@contoso.com", i.ToString("D4")),
                         PhoneNumber = string.Format("425-555-{0}", i.ToString("D4"))
@@ -197,11 +216,16 @@ namespace CosmosTableSamples
                 }
 
                 // Execute the batch operation.
-                IList<TableResult> results = await table.ExecuteBatchAsync(batchOperation);
+                TableBatchResult results = await table.ExecuteBatchAsync(batchOperation);
                 foreach (var res in results)
                 {
                     var customerInserted = res.Result as CustomerEntity;
                     Console.WriteLine("Inserted entity with\t Etag = {0} and PartitionKey = {1}, RowKey = {2}", customerInserted.ETag, customerInserted.PartitionKey, customerInserted.RowKey);
+                }
+
+                if (results.RequestCharge.HasValue)
+                {
+                    Console.WriteLine("Request Charge of the Batch Operation against Cosmos DB Table: " + results.RequestCharge);
                 }
             }
             catch (StorageException e)
@@ -356,6 +380,54 @@ namespace CosmosTableSamples
             }
         }
 
+        /// <summary>
+        /// Demonstrate a cross partition query with order by against Cosmos Table API
+        /// </summary>
+        /// <param name="table">Sample table name</param>
+        /// <param name="startRowKey"> The lowest bound of the row key range within which to search</param>
+        /// <param name="endRowKey">The highest bound of the row key range within which to search</param>
+        /// <returns>A Task object</returns>
+        private static async Task ExecuteCrossPartitionQueryWithOrderBy(CloudTable table, string startRowKey, string endRowKey)
+        {
+            try
+            {
+                TableQuery<CustomerEntity> partitionScanQuery =
+                    new TableQuery<CustomerEntity>().Where(
+                        TableQuery.CombineFilters(
+                            TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.GreaterThanOrEqual, startRowKey),
+                            TableOperators.And,
+                            TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.LessThanOrEqual, endRowKey)
+                            )
+                        )
+                        .OrderBy("RowKey");
+
+                TableContinuationToken token = null;
+
+                // Read entities from each query segment.
+                do
+                {
+                    TableQuerySegment<CustomerEntity> segment = await table.ExecuteQuerySegmentedAsync(partitionScanQuery, token);
+
+                    if (segment.RequestCharge.HasValue)
+                    {
+                        Console.WriteLine("Request Charge for Query Operation: " + segment.RequestCharge);
+                    }
+
+                    token = segment.ContinuationToken;
+                    foreach (CustomerEntity entity in segment)
+                    {
+                        Console.WriteLine("Customer: {0},{1}\t{2}\t{3}", entity.PartitionKey, entity.RowKey, entity.Email, entity.PhoneNumber);
+                    }
+                }
+                while (token != null);
+            }
+            catch (StorageException e)
+            {
+                Console.WriteLine(e.Message);
+                Console.ReadLine();
+                throw;
+            }
+        }
 
         /// <summary>
         /// Manage the properties of the Table service.
@@ -494,7 +566,6 @@ namespace CosmosTableSamples
                 Console.WriteLine("    expiry time: {0}:", keyValue.Value.SharedAccessExpiryTime);
             }
         }
-
 
         /// <summary>
         /// Demonstrates basic CRUD operations using a SAS for authentication.
