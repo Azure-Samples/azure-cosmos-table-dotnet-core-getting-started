@@ -1,7 +1,11 @@
 ---
-services: cosmos-db
-platforms: dotnet core
-api: Table
+page_type: sample
+languages:
+- csharp
+products:
+- azure
+description: "This .net core sample demonstrates how to perform common tasks using Azure Cosmos DB Table API with .NET Standard SDK including creating a table, CRUD operation, batch operation and different querying techniques. "
+urlFragment: azure-cosmos-table-dotnet-core-getting-started
 ---
 
 # Cosmos DB Table API .NET Core Sample
