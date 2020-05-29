@@ -35,6 +35,7 @@ namespace CosmosTableSamples
             }
         }
 
+        //  <InsertItem>
         public static async Task<CustomerEntity> InsertOrMergeEntityAsync(CloudTable table, CustomerEntity entity)
         {
             if (entity == null)
@@ -65,7 +66,9 @@ namespace CosmosTableSamples
                 throw;
             }
         }
+        //  </InsertItem>
 
+        //  <DeleteItem>
         public static async Task DeleteEntityAsync(CloudTable table, CustomerEntity deleteEntity)
         {
             try
@@ -91,6 +94,7 @@ namespace CosmosTableSamples
                 throw;
             }
         }
+        //  </DeleteItem>
 
         /// <summary>
         /// Check if given connection string is for Azure Table storage or Azure CosmosDB Table.
