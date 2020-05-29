@@ -8,6 +8,7 @@ namespace CosmosTableSamples
 
     class SamplesUtils
     {
+        //  <QueryData>
         public static async Task<CustomerEntity> RetrieveEntityUsingPointQueryAsync(CloudTable table, string partitionKey, string rowKey)
         {
             try
@@ -34,6 +35,7 @@ namespace CosmosTableSamples
                 throw;
             }
         }
+        //  </QueryData>
 
         //  <InsertItem>
         public static async Task<CustomerEntity> InsertOrMergeEntityAsync(CloudTable table, CustomerEntity entity)
