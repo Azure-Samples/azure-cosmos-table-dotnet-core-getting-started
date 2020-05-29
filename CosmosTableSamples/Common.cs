@@ -30,6 +30,7 @@ namespace CosmosTableSamples
             return storageAccount;
         }
 
+        //  <CreateTable>
         public static async Task<CloudTable> CreateTableAsync(string tableName)
         {
             string storageConnectionString = AppSettings.LoadAppSettings().StorageConnectionString;
@@ -56,6 +57,7 @@ namespace CosmosTableSamples
             Console.WriteLine();
             return table;
         }
+        //  </CreateTable>
 
         public static async Task<CloudTable> CreateTableAsync(CloudTableClient tableClient, string tableName)
         {
