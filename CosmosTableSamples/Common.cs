@@ -1,4 +1,5 @@
-﻿using System;
+//  <createStorageAccount>
+using System;
 
 namespace CosmosTableSamples
 {
@@ -29,6 +30,7 @@ namespace CosmosTableSamples
 
             return storageAccount;
         }
+        //  </createStorageAccount>
 
         //  <CreateTable>
         public static async Task<CloudTable> CreateTableAsync(string tableName)
